@@ -120,7 +120,7 @@ import static study.querydsl.entity.QMember.member;
 
         QueryResults<Member> results = queryFactory
                 .selectFrom(member)
-                .fetchResults();
+                .fetchResults(); //fetch를 쓰기를 권고 -> queydsl 5.0.0 버전에서 deprecated
 
         results.getTotal();
 
@@ -128,7 +128,7 @@ import static study.querydsl.entity.QMember.member;
 
         long total = queryFactory
                 .selectFrom(member)
-                .fetchCount();
+                .fetch().size(); //fetchCount() -> queydsl 5.0.0 버전에서 deprecated
     }
 
     /**
