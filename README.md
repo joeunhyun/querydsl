@@ -11,8 +11,7 @@
 - Q 파일 업로드 경로 확인
   - build.gradle 확인
   - def querydslDir = "$buildDir/generated/querydsl"
-- fetchResults(), fetchCount() 5.0.0 버전에서 deprecated  
--> https://devwithpug.github.io/java/querydsl-with-datajpa/
+- fetchResults(), fetchCount() 5.0.0 버전에서 deprecated (cc. https://devwithpug.github.io/java/querydsl-with-datajpa/)
 
 ## JPQL 장점
 1. 컴파일 시 오류가 발생한다.
