@@ -1,18 +1,14 @@
 package study.querydsl.respository;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 import study.querydsl.dto.MemberSearchCondition;
 import study.querydsl.dto.MemberTeamDto;
 import study.querydsl.dto.QMemberTeamDto;
 import study.querydsl.entity.Member;
-import study.querydsl.entity.QTeam;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -110,20 +106,26 @@ public class MemberJpaRepository {
                 ))
                 .from(member)
                 .leftJoin(member.team, team)
-                .where(userNameEq(condition.getUsername()), teamNameEq(condition.getTeamName()),
-                        ageGoe(condition.getAgeGoe()), ageLoe(condition.getAgeLoe()))
+                .where(userNameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageLoe(condition.getAgeLoe()),
+                        ageGoe(condition.getAgeGoe()))
                 .fetch();
     }
 
-    private Predicate ageLoe(Integer ageLoe) {
+    private BooleanExpression ageBetween(int ageLoe, int ageGoe){
+        return ageLoe(ageLoe).and(ageGoe(ageGoe));
+    }
+
+    private BooleanExpression ageLoe(Integer ageLoe) {
         return ageLoe != null ? member.age.loe(ageLoe) : null;
     }
 
-    private Predicate ageGoe(Integer ageGoe) {
+    private BooleanExpression ageGoe(Integer ageGoe) {
         return ageGoe != null ? member.age.goe(ageGoe) : null;
     }
 
-    private Predicate teamNameEq(String teamName) {
+    private BooleanExpression teamNameEq(String teamName) {
         return hasText(teamName) ? team.name.eq(teamName) : null;
     }
 
