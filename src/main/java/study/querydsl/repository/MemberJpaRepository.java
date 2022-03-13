@@ -1,4 +1,4 @@
-package study.querydsl.respository;
+package study.querydsl.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -108,13 +108,12 @@ public class MemberJpaRepository {
                 .leftJoin(member.team, team)
                 .where(userNameEq(condition.getUsername()),
                         teamNameEq(condition.getTeamName()),
-                        ageLoe(condition.getAgeLoe()),
-                        ageGoe(condition.getAgeGoe()))
+                        ageBetween(condition.getAgeLoe(), condition.getAgeGoe()))
                 .fetch();
     }
 
-    private BooleanExpression ageBetween(int ageLoe, int ageGoe){
-        return ageLoe(ageLoe).and(ageGoe(ageGoe));
+    private BooleanExpression ageBetween(Integer ageLoe, Integer ageGoe){
+        return ageLoe(ageLoe).and(ageGoe(ageGoe)); //분기 처리를 해야한다
     }
 
     private BooleanExpression ageLoe(Integer ageLoe) {
