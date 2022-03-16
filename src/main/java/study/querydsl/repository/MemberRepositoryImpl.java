@@ -3,11 +3,13 @@ package study.querydsl.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
 import study.querydsl.dto.MemberSearchCondition;
@@ -31,8 +33,28 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         queryFactory = new JPAQueryFactory(em);
     }
 
+//    public MemberRepositoryImpl(){
+//        super(Member.class);
+//    }
+
     @Override
     public List<MemberTeamDto> search(MemberSearchCondition condition){
+
+        //QuerydslRepositorySupport 사용 시
+//        from(member)
+//                .leftJoin(member.team, team)
+//                .where(
+//                        userNameEq(condition.getUsername()),
+//                        teamNameEq(condition.getTeamName()),
+//                        ageBetween(condition.getAgeLoe(), condition.getAgeGoe())
+//                ).select(new QMemberTeamDto(
+//                        member.id.as("memberId"),
+//                        member.username,
+//                        member.age,
+//                        team.id.as("teamId"),
+//                        team.name.as("teamName")))
+//                .fetch();
+
         return queryFactory
                 .select(new QMemberTeamDto(
                         member.id.as("memberId"),
@@ -72,6 +94,34 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         long total = results.getTotal();
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    public Page<MemberTeamDto> searchPageSimpleByQuerydslRepositorySupport
+            (MemberSearchCondition condition, Pageable pageable) {
+
+        //QuerydslRepositorySupport 사용 시
+
+//        JPQLQuery<MemberTeamDto> jpaQuery = from(member)
+//                .leftJoin(member.team, team)
+//                .where(userNameEq(condition.getUsername()),
+//                        teamNameEq(condition.getTeamName()),
+//                        ageBetween(condition.getAgeLoe(), condition.getAgeGoe()))
+//                .select(new QMemberTeamDto(
+//                        member.id.as("memberId"),
+//                        member.username,
+//                        member.age,
+//                        team.id.as("teamId"),
+//                        team.name.as("teamName")
+//                ));
+//
+//        JPQLQuery<MemberTeamDto> query = getQuerydsl().applyPagination(pageable, jpaQuery);//offset, limit 넣어줌
+//
+//        QueryResults<MemberTeamDto> results = query.fetchResults();
+//        List<MemberTeamDto> content = results.getResults();
+//        long total = results.getTotal();
+//
+//        return new PageImpl<>(content, pageable, total);
+        return null;
     }
 
     @Override
